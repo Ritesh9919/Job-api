@@ -3,6 +3,9 @@ require('dotenv').config();
 const port = process.env.PORT || 8000;
 const connectDB = require('./db/mongoose');
 require('express-async-errors');
+const errorHandlerMiddleware = require('./middleware/error_handler');
+const e = require('express');
+
 
 const app = express();
 
@@ -10,7 +13,9 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
 
-app.use('/', require('./routes/user'));
+app.use('/', require('./routes'));
+
+app.use(errorHandlerMiddleware);
 
 const start = async() => {
     try {
