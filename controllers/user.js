@@ -31,6 +31,12 @@ module.exports.login = async(req, res) => {
     if(!user) {
         throw new UnauthenticatedError(StatusCodes.UNAUTHORIZED, 'Invalid Credentials');
     }
+
+   const isPasswordCurrect = await user.comparePassword(password);
+   if(!isPasswordCurrect) {
+    throw new UnauthenticatedError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
+   }
+   
     const token = user.createJWT();
     return res.json({
         user:{

@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     type:String,
     required:[true, 'please provide name'],
     minLength:3,
-    maxLength:20
+    maxLength:50
   },
 
   email:{
@@ -34,6 +34,11 @@ userSchema.pre('save', async function() {
 
 userSchema.methods.createJWT = function() {
   return jwt.sign({userId:this._id, name:this.name}, process.env.SECRET_KEY, {expiresIn:process.env.JWT_LIFETIME});
+}
+
+userSchema.methods.comparePassword = async function (condidatePassword) {
+  const isMatch = await bcrypt.compare(condidatePassword, this.password);
+  return isMatch;
 }
 
 
