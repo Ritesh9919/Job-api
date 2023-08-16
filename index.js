@@ -5,6 +5,7 @@ const connectDB = require('./db/mongoose');
 require('express-async-errors');
 const errorHandlerMiddleware = require('./middleware/error_handler');
 const e = require('express');
+const NotFoundMiddleware = require('./middleware/not_found');
 
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({extended:true}));
 app.use('/', require('./routes'));
 
 app.use(errorHandlerMiddleware);
+app.use(NotFoundMiddleware);
 
 const start = async() => {
     try {
