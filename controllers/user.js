@@ -24,17 +24,17 @@ return res.status(StatusCodes.CREATED).json({
 module.exports.login = async(req, res) => {
     const {email,password} = req.body;
     if(!email || !password) {
-        throw new BadRequestError(StatusCodes.BAD_REQUEST, 'please provide email and password');
+        throw new BadRequestError('please provide email and password');
     }
 
     const user = await User.findOne({email:email});
     if(!user) {
-        throw new UnauthenticatedError(StatusCodes.UNAUTHORIZED, 'Invalid Credentials');
+        throw new UnauthenticatedError('Invalid Credentials');
     }
 
    const isPasswordCurrect = await user.comparePassword(password);
    if(!isPasswordCurrect) {
-    throw new UnauthenticatedError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
+    throw new UnauthenticatedError('Invalid credentials');
    }
    
     const token = user.createJWT();
